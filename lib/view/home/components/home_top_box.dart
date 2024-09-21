@@ -1,9 +1,10 @@
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:music/res/app_images.dart';
-import 'package:music/res/app_svg.dart';
+import 'package:simple_music_player/res/app_images.dart';
+import 'package:simple_music_player/res/app_svg.dart';
 
 import '../../../res/app_colors.dart';
 
@@ -20,9 +21,10 @@ class HomeIntroBox extends StatelessWidget {
           color: backgroundColor,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
-            BoxShadow(color: shadowColor, offset: const Offset(8, 6), blurRadius: 12),
+            BoxShadow(
+                color: shadowColor, offset: const Offset(8, 6), blurRadius: 12),
             const BoxShadow(
-                color: Colors.white, offset:  Offset(-8, -6), blurRadius: 12),
+                color: Colors.white, offset: Offset(-8, -6), blurRadius: 12),
           ],
         ),
         child: Stack(
@@ -31,7 +33,7 @@ class HomeIntroBox extends StatelessWidget {
             ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.asset(
-                  AppImages.imageList[11]!,
+                  AppImages.imageList[12]!,
                   fit: BoxFit.cover,
                 )),
             Padding(
@@ -54,40 +56,40 @@ class HomeIntroBox extends StatelessWidget {
                         ),
                         alignment: Alignment.center,
                         child: const Text(
-                          'See Recently',
+                          "recently_played",
                           style: TextStyle(color: Colors.white, fontSize: 8),
-                        ),
+                        ).tr(),
                       ),
                       const SizedBox(
                         height: 5,
                       ),
                       const Text(
-                        'Sweet Melody',
+                        "header_name",
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 20),
-                      ),
+                      ).tr(),
                       const SizedBox(
                         height: 5,
                       ),
-                      const Row(
+                      Row(
                         // crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
-                            'Little Mix  ',
+                          const Text(
+                            "header_direct",
                             style: TextStyle(
                                 color: Colors.white70,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12),
-                          ),
-                          Text(
-                            '2033533 Listeners',
+                          ).tr(),
+                          const Text(
+                            'header_desc',
                             style: TextStyle(
                                 color: Colors.white70,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 8),
-                          ),
+                          ).tr(),
                         ],
                       ),
                       const SizedBox(
@@ -112,17 +114,24 @@ class HomeIntroBox extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Text('Listen',style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12
-                              ),),
-                              const SizedBox(width: 10,),
+                              const Text(
+                                'listen',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12),
+                              ).tr(),
+                              const SizedBox(
+                                width: 10,
+                              ),
                               CircleAvatar(
                                 radius: 11,
                                 backgroundColor: Colors.white,
                                 child: Center(
-                                  child: SvgPicture.asset(AppSvg.play,color: Colors.grey,),
+                                  child: SvgPicture.asset(
+                                    AppSvg.play,
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               )
                             ],

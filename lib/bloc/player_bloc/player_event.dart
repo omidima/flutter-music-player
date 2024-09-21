@@ -1,43 +1,41 @@
 part of 'player_bloc.dart';
 
-abstract class PlayerEvent extends Equatable {
-  const PlayerEvent();
-  @override
-  List<Object> get props=>[];
-}
-class PlayPauseEvent extends PlayerEvent{
+abstract class PlayerEvent {
   final bool isPlaying;
   final double progress;
-  final AudioFile file;
-  const PlayPauseEvent({required this.isPlaying,required this.file,this.progress=0.0});
-  @override
-  List<Object> get props=>[isPlaying,file,progress];
-}
-class OnPlayEvent extends PlayerEvent{
-  final bool isPlaying;
-  final AudioFile file;
+  final AudioFile? file;
 
-  const OnPlayEvent({ this.isPlaying=true,required this.file});
-  @override
-  List<Object> get props=>[isPlaying,file];
+  const PlayerEvent({this.file, this.isPlaying = false, this.progress = 0});
 }
-class OnTapPrevEvent extends PlayerEvent{}
-class ProgressUpdateEvent extends PlayerEvent{
-  final double progress;
-  const ProgressUpdateEvent({required this.progress});
-  @override
-  List<Object> get props=>[progress];
+
+class InitState extends PlayerEvent {}
+
+class PlayPauseEvent extends PlayerEvent {
+  const PlayPauseEvent();
 }
-class OnTapFavouriteEvent extends PlayerEvent{
+
+class OnPlayEvent extends PlayerEvent {
+  final bool isLiked;
+  OnPlayEvent({required AudioFile file, required this.isLiked}) : super(file: file);
+}
+
+class OnTapPrevEvent extends PlayerEvent {
+  OnTapPrevEvent();
+}
+
+class ProgressUpdateEvent extends PlayerEvent {
+  const ProgressUpdateEvent({required double progress})
+      : super(progress: progress);
+}
+
+class OnTapFavouriteEvent extends PlayerEvent {
   final AudioFile file;
   final BuildContext context;
-  const OnTapFavouriteEvent({required this.file,required this.context});
-  @override
-  List<Object> get props=>[file,context];
+  const OnTapFavouriteEvent({required this.file, required this.context});
 }
 
-class OnTapForwardEvent extends PlayerEvent{}
-class OnTapBackwardEvent extends PlayerEvent{}
+class OnTapForwardEvent extends PlayerEvent {}
 
+class OnCloseEvent extends PlayerEvent {}
 
-
+class OnTapBackwardEvent extends PlayerEvent {}

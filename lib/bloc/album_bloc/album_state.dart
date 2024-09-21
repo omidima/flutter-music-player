@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:music/model/audio_file_model.dart';
+import 'package:simple_music_player/model/audio_file_model.dart';
 
 import '../home_bloc/home_state.dart';
 

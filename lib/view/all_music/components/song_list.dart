@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:layout_pro/responsive_layout.dart';
-import 'package:music/bloc/album_bloc/album_bloc.dart';
-import 'package:music/bloc/home_bloc/home_state.dart';
-import 'package:music/utils/utils.dart';
-import 'package:music/view/common_widget/loading_files.dart';
-import 'package:music/view/home/components/song_widget.dart';
+import 'package:simple_music_player/bloc/album_bloc/album_bloc.dart';
+import 'package:simple_music_player/bloc/home_bloc/home_state.dart';
+import 'package:simple_music_player/utils/utils.dart';
+import 'package:simple_music_player/view/common_widget/loading_files.dart';
+import 'package:simple_music_player/view/home/components/song_widget.dart';
 
 import '../../../bloc/album_bloc/album_state.dart';
 import '../../../bloc/player_bloc/player_bloc.dart';
@@ -18,12 +18,13 @@ class SongList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AlbumBloc, AlbumState>(
-      buildWhen: (previous, current) => previous.fileStatus!=current.fileStatus,
+      buildWhen: (previous, current) =>
+          previous.fileStatus != current.fileStatus,
       builder: (context, s) {
-        if(s.fileStatus==Status.complete){
+        if (s.fileStatus == Status.complete) {
           return BlocBuilder<AlbumBloc, AlbumState>(
             buildWhen: (previous, current) =>
-            previous.audioFiles != current.audioFiles,
+                previous.audioFiles != current.audioFiles,
             builder: (context, state) {
               return ResponsiveLayout(
                   mobileCrossAxisCount: 1,
@@ -46,7 +47,7 @@ class SongList extends StatelessWidget {
                         onTap: () {
                           context
                               .read<PlayerBloc>()
-                              .add(OnPlayEvent(file: state.audioFiles[index]));
+                              .playAction(state.audioFiles.sublist(index));
                           Utils.go(
                               context: context,
                               screen: Player(
@@ -56,8 +57,8 @@ class SongList extends StatelessWidget {
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
                             color: backgroundColor,
                             borderRadius: BorderRadius.circular(5),
@@ -73,9 +74,11 @@ class SongList extends StatelessWidget {
                             ],
                           ),
                           child: SongWidget(
-                              image: image,
-                              name: state.audioFiles[index].name.toString(),
-                              length: state.audioFiles[index].length.toString(), file: state.audioFiles[index],),
+                            image: image,
+                            name: state.audioFiles[index].name.toString(),
+                            length: state.audioFiles[index].length.toString(),
+                            file: state.audioFiles[index],
+                          ),
                         ),
                       ),
                     );
@@ -83,7 +86,7 @@ class SongList extends StatelessWidget {
                   itemCount: state.audioFiles.length);
             },
           );
-        }else{
+        } else {
           return const FilesLoading();
         }
       },

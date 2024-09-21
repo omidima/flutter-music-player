@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:music/bloc/player_bloc/player_bloc.dart';
-import 'package:music/model/audio_file_model.dart';
+import 'package:simple_music_player/bloc/player_bloc/player_bloc.dart';
+import 'package:simple_music_player/model/audio_file_model.dart';
 
 import '../../../res/app_colors.dart';
 import '../../../res/app_svg.dart';
 import '../../common_widget/soft_button.dart';
 
 class SongCircleContainer extends StatelessWidget {
-  const SongCircleContainer({super.key, required this.file, required this.image});
+  const SongCircleContainer(
+      {super.key, required this.file, required this.image});
   final String image;
   final AudioFile file;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
+      height: 305,
       width: MediaQuery.sizeOf(context).width,
       child: Stack(
-        alignment: Alignment.topCenter,
+        alignment: Alignment.center,
         // fit: StackFit.expand,
         children: [
           Container(
             height: 270,
             width: 270,
-            margin: const EdgeInsets.only(bottom: 20),
             decoration: BoxDecoration(
                 color: backgroundColor,
                 boxShadow: [
@@ -41,7 +41,6 @@ class SongCircleContainer extends StatelessWidget {
                 shape: BoxShape.circle),
           ),
           Positioned(
-            top: 20,
             child: CircularSoftButton(
               padding: 0,
               radius: 120,
@@ -63,10 +62,12 @@ class SongCircleContainer extends StatelessWidget {
             child: Transform.flip(
               flipX: true,
               child: Transform.rotate(
-                angle: 0.5,
+                angle: .25,
                 child: RotatedBox(
                   quarterTurns: 2,
-                  child: BlocBuilder<PlayerBloc, PlayerState>(
+                  child: BlocBuilder<PlayerBloc, PlayerEvent>(
+                    buildWhen: (previous, current) =>
+                        current is ProgressUpdateEvent,
                     builder: (context, state) {
                       return CircularProgressIndicator(
                         color: blueBackground,
@@ -82,17 +83,15 @@ class SongCircleContainer extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 7,
+            bottom: 0,
             child: GestureDetector(
-              onTap: () => context.read<PlayerBloc>().add(PlayPauseEvent(
-                  file: file,
-                  isPlaying: !context.read<PlayerBloc>().isPlaying)),
+              onTap: () =>
+                  BlocProvider.of<PlayerBloc>(context).onPlayPauseEvent(),
               child: CircleAvatar(
                 radius: 32,
                 backgroundColor: blueBackground,
-                child: BlocBuilder<PlayerBloc, PlayerState>(
-                  buildWhen: (previous, current) =>
-                      previous.isPlaying != current.isPlaying,
+                child: BlocBuilder<PlayerBloc, PlayerEvent>(
+                  buildWhen: (previous, current) => current is PlayPauseEvent,
                   builder: (context, state) {
                     return AnimatedSwitcher(
                       switchInCurve: Curves.easeInOutBack,
@@ -105,7 +104,9 @@ class SongCircleContainer extends StatelessWidget {
                       duration: const Duration(milliseconds: 300),
                       child: Center(
                         child: SvgPicture.asset(
-                          state.isPlaying ? AppSvg.pause : AppSvg.play,
+                          BlocProvider.of<PlayerBloc>(context).player.playing
+                              ? AppSvg.pause
+                              : AppSvg.play,
                           color: Colors.white,
                           width: 20,
                         ),

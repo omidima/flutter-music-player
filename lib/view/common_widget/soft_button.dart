@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../res/app_colors.dart';
+// ignore: must_be_immutable
 class CircularSoftButton extends StatelessWidget {
   double? radius;
   final Widget? icon;

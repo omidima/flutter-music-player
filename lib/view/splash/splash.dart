@@ -1,9 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/bloc/album_bloc/album_bloc.dart';
-import 'package:music/bloc/album_bloc/album_event.dart';
-import 'package:music/res/app_icons.dart';
-import 'package:music/view/common_widget/soft_button.dart';
+import 'package:simple_music_player/view/common_widget/soft_button.dart';
 
 import '../../view_model/services/splash_services.dart';
 
@@ -20,6 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SplashServices.isFirstTime(context: context);
     // context.read<HomeBloc>().add(GetFilesEvent());
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,16 +31,22 @@ class _SplashScreenState extends State<SplashScreen> {
               padding: 10,
               icon: Container(
                 margin: const EdgeInsets.all(5),
-                child: Center(
-                  child: Icon(Icons.play_arrow_rounded,color: Colors.blue,size: 60,),
+                child: const Center(
+                  child: Icon(
+                    Icons.play_arrow_rounded,
+                    color: Colors.blue,
+                    size: 60,
+                  ),
                 ),
               ),
             ),
-            Text('Music',style: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
-              fontSize: 30
-            ),)
+            const Text(
+              "app_name",
+              style: TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30),
+            ).tr()
           ],
         ),
       ),

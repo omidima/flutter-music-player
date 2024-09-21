@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/bloc/album_bloc/album_event.dart';
-import 'package:music/view/all_music/components/folders_list.dart';
-import 'package:music/view/all_music/components/song_list.dart';
-import 'package:music/view/common_widget/app_bar.dart';
-import 'package:music/view/home/components/home_bottom_player.dart';
+import 'package:simple_music_player/bloc/album_bloc/album_event.dart';
+import 'package:simple_music_player/view/all_music/components/folders_list.dart';
+import 'package:simple_music_player/view/all_music/components/song_list.dart';
+import 'package:simple_music_player/view/common_widget/app_bar.dart';
+import 'package:simple_music_player/view/home/components/home_bottom_player.dart';
 
 import '../../bloc/album_bloc/album_bloc.dart';
 import '../../bloc/album_bloc/album_state.dart';
@@ -16,10 +16,10 @@ class AllMusicAlbum extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: WillPopScope(
-        onWillPop: ()async{
-          if(context.read<AlbumBloc>().currentPage==0){
+        onWillPop: () async {
+          if (context.read<AlbumBloc>().currentPage == 0) {
             return true;
-          }else{
+          } else {
             context.read<AlbumBloc>().add(BackArrowTap(context: context));
             return false;
           }
@@ -36,18 +36,20 @@ class AllMusicAlbum extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: BlocBuilder<AlbumBloc, AlbumState>(
-                      buildWhen: (previous, current) => previous.appBarTitle!=current.appBarTitle,
+                      buildWhen: (previous, current) =>
+                          previous.appBarTitle != current.appBarTitle,
                       builder: (context, state) {
                         return CustomAppBar(
                           title: state.appBarTitle,
-                          preIcon: GestureDetector(
-                            onTap: () => context.read<AlbumBloc>().add(BackArrowTap(context: context)),
+                          postIcon: InkWell(
+                            onTap: () => context
+                                .read<AlbumBloc>()
+                                .add(BackArrowTap(context: context)),
                             child: const Icon(
-                              Icons.arrow_back_ios_new_rounded,
+                              Icons.arrow_back_ios_rounded,
                               size: 20,
                             ),
                           ),
-                          postIcon: const Icon(Icons.more_horiz_rounded),
                         );
                       },
                     ),
@@ -55,10 +57,9 @@ class AllMusicAlbum extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  Expanded(child: PageView(
-                    controller: context
-                        .read<AlbumBloc>()
-                        .pageController,
+                  Expanded(
+                      child: PageView(
+                    controller: context.read<AlbumBloc>().pageController,
                     physics: const NeverScrollableScrollPhysics(),
                     children: const [
                       FolderList(),
@@ -67,7 +68,7 @@ class AllMusicAlbum extends StatelessWidget {
                   ))
                 ],
               ),
-              const HomeBottomPlayer(),
+              HomeBottomPlayer(),
             ],
           ),
         ),

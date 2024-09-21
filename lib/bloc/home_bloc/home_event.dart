@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:music/bloc/home_bloc/home_state.dart';
-import 'package:music/model/audio_file_model.dart';
+import 'package:simple_music_player/bloc/home_bloc/home_state.dart';
+import 'package:simple_music_player/model/audio_file_model.dart';
 
 abstract class HomeEvents extends Equatable{
   @override
@@ -8,6 +8,9 @@ abstract class HomeEvents extends Equatable{
 }
 class GetSongEvent extends HomeEvents{}
 class GetFavSongEvent extends HomeEvents{}
+
+class GetAllMusics extends HomeEvents {}
+
 class ChangeLoadingStatusSong extends HomeEvents{
   final Status songStatus;
   ChangeLoadingStatusSong({required this.songStatus,});

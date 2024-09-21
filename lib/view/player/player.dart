@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:music/model/audio_file_model.dart';
-import 'package:music/res/app_svg.dart';
-import 'package:music/view/common_widget/app_bar.dart';
-import 'package:music/view/player/components/song_bottom_contianer.dart';
-import 'package:music/view/player/components/song_controllers.dart';
-import 'package:music/view/player/components/song_title.dart';
+import 'package:simple_music_player/bloc/player_bloc/player_bloc.dart';
+import 'package:simple_music_player/model/audio_file_model.dart';
+import 'package:simple_music_player/res/app_svg.dart';
+import 'package:simple_music_player/utils/utils.dart';
+import 'package:simple_music_player/view/common_widget/app_bar.dart';
+import 'package:simple_music_player/view/player/components/song_controllers.dart';
+import 'package:simple_music_player/view/player/components/song_title.dart';
 
 import 'components/song_circle_container.dart';
+
 class Player extends StatelessWidget {
   const Player({super.key, required this.file, required this.image});
   final AudioFile file;
@@ -16,45 +19,84 @@ class Player extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child:Stack(
+        child: Stack(
           fit: StackFit.expand,
           children: [
-            Positioned(
-              top: 1,
-              height: MediaQuery.sizeOf(context).height-100,
-              width: MediaQuery.sizeOf(context).width,
-              child: Center(
-                child: SongCircleContainer(file : file,image:image,
-                ),
-              ),
-            ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CustomAppBar(
-                    preIcon: InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Icon(
-                        Icons.keyboard_arrow_down_outlined,
-                        color: Colors.black,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CustomAppBar(
+                        preIcon: InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: const Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            color: Colors.black,
+                          ),
+                        ),
+                        postIcon: SvgPicture.asset(
+                          AppSvg.more,
+                          width: 17,
+                        ),
+                      ),
+                      BlocBuilder<PlayerBloc, PlayerEvent>(
+                        buildWhen: (previous, current) =>
+                            current is OnPlayEvent,
+                        builder: (context, state) {
+                          if (BlocProvider.of<PlayerBloc>(context)
+                              .player
+                              .currentIndex != null) {
+                            final file =
+                                BlocProvider.of<PlayerBloc>(context).musics[
+                                    BlocProvider.of<PlayerBloc>(context)
+                                        .player
+                                        .currentIndex!];
+                            return Column(
+                              children: [
+                                SongTitle(
+                                  file: file,
+                                ),
+                                Container(
+                                  width: MediaQuery.sizeOf(context).width,
+                                  child: Center(
+                                    child: SongCircleContainer(
+                                      file: file,
+                                      image: Utils.getRandomImage(),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          } else {
+                            return Text("loading");
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  BlocBuilder<PlayerBloc, PlayerEvent>(
+                    buildWhen: (previous, current) => current is OnPlayEvent,
+                    builder: (context, state) => Expanded(
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: SongControllers(
+                          file: file,
+                          isLiked: state is OnPlayEvent
+                              ? state.isLiked
+                              : false,
+                        ),
                       ),
                     ),
-                    postIcon: SvgPicture.asset(
-                      AppSvg.more,
-                      width: 17,
-                    ),
-                  ),
-                  SongTitle(file: file,),
-                  Spacer(),
-                  SongControllers(file: file,),
-                  const SizedBox(height: 50,),
-                  const SongBottomContainer(),
+                  )
                   // SizedBox(height: 40,)
                 ],
               ),
             ),
-
           ],
         ),
       ),

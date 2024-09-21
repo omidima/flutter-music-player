@@ -47,61 +47,78 @@
 
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:music/res/app_colors.dart';
-import 'package:music/res/app_images.dart';
+import 'package:simple_music_player/res/app_colors.dart';
+import 'package:simple_music_player/res/app_images.dart';
 import 'package:permission_handler/permission_handler.dart';
-class Utils{
-  static go({required BuildContext context,required dynamic screen,bool replace=false}){
-    replace ?
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => screen,))
-        : Navigator.push(context, MaterialPageRoute(builder: (context) => screen,));
+
+class Utils {
+  static go(
+      {required BuildContext context,
+      required dynamic screen,
+      bool replace = false}) {
+    replace
+        ? Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => screen,
+            ))
+        : Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => screen,
+            ));
   }
-  static String getRandomImage(){
+
+  static String getRandomImage() {
     return AppImages.imageList[Random().nextInt(13)]!;
   }
-  static Future<bool> requestPermission()async{
+
+  static Future<bool> requestPermission() async {
     var status1 = await Permission.audio.status;
-    if(status1.isGranted){
+    if (status1.isGranted) {
       return true;
-    }
-    else{
+    } else {
       Map<Permission, PermissionStatus> statuses = await [
         Permission.storage,
         Permission.audio,
         Permission.manageExternalStorage,
       ].request();
       var temp1 = await Permission.audio.status;
-      if(temp1.isGranted){
+      if (temp1.isGranted) {
         return true;
-      }else {
+      } else {
         return false;
       }
     }
   }
+
   static String getGreetingMessage() {
     DateTime now = DateTime.now();
     int hour = now.hour;
     if (hour >= 5 && hour < 12) {
-      return 'Good morning';
+      return 'morning_message'.tr();
     } else if (hour >= 12 && hour < 18) {
-      return 'Good afternoon';
+      return 'evening_message'.tr();
     } else {
-      return 'Good evening';
+      return 'night_message'.tr();
     }
   }
-  static showBottomSheet({required BuildContext context,
-  required Widget widget,
-    bool isDismissible=false
-  }){
+
+  static showBottomSheet(
+      {required BuildContext context,
+      required Widget widget,
+      bool isDismissible = false}) {
     showModalBottomSheet(
       backgroundColor: backgroundColor,
       isDismissible: isDismissible,
       enableDrag: false,
       isScrollControlled: true,
-      context: context, builder: (context) {
-      return widget;
-    },);
+      context: context,
+      builder: (context) {
+        return widget;
+      },
+    );
   }
-
 }

@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:music/bloc/home_bloc/home_event.dart';
-import 'package:music/model/audio_file_model.dart';
-import 'package:music/res/app_colors.dart';
-import 'package:music/utils/utils.dart';
-import 'package:music/view/common_widget/soft_button.dart';
+import 'package:simple_music_player/bloc/home_bloc/home_event.dart';
+import 'package:simple_music_player/model/audio_file_model.dart';
+import 'package:simple_music_player/res/app_colors.dart';
+import 'package:simple_music_player/res/app_string.dart';
+import 'package:simple_music_player/utils/utils.dart';
+import 'package:simple_music_player/view/common_widget/soft_button.dart';
+import 'package:simple_music_player/view/player/player.dart';
 
 import '../../../bloc/home_bloc/home_bloc.dart';
 import '../../../bloc/player_bloc/player_bloc.dart';
 import '../../../res/app_svg.dart';
 
 class SongWidget extends StatelessWidget {
-  const SongWidget({super.key, required this.image, required this.name, required this.length, required this.file});
+  const SongWidget(
+      {super.key,
+      required this.image,
+      required this.name,
+      required this.length,
+      required this.file});
   final String image;
   final String name;
   final String length;
@@ -53,33 +60,31 @@ class SongWidget extends StatelessWidget {
             ],
           ),
         ),
-        Spacer(),
-        GestureDetector(
-          onTap: () {
-            Utils.showBottomSheet(context: context,
+        InkWell(
+            onTap: () {
+              Utils.showBottomSheet(
+                context: context,
                 isDismissible: true,
                 widget: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: backgroundColor,
-              ),
-              height: 120,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: backgroundColor,
+                  ),
+                  height: 120,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.pop(context);
-                          context
-                              .read<PlayerBloc>()
-                              .add(OnPlayEvent(file: file));
-                          // Utils.go(
-                          //     context: context,
-                          //     screen: Player(
-                          //       file: file,
-                          //       image: image,
-                          //     ));
+                          // Navigator.pop(context);
+                          context.read<PlayerBloc>().playAction([file]);
+                          Utils.go(
+                              context: context,
+                              screen: Player(
+                                file: file,
+                                image: image,
+                              ));
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -87,18 +92,26 @@ class SongWidget extends StatelessWidget {
                             CircularSoftButton(
                               radius: 25,
                               padding: 0,
-                              icon: Center(child: SvgPicture.asset(AppSvg.play,width: 20,color: blueBackground,)),
+                              icon: Center(
+                                  child: SvgPicture.asset(
+                                AppSvg.play,
+                                width: 20,
+                                color: blueBackground,
+                              )),
                             ),
-                            SizedBox(height: 10,),
-                            Text('Play')
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(AppStrings.play)
                           ],
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
-                          context.read<HomeBloc>().add(AddToFavouriteEvent(file: file));
-
+                          context
+                              .read<HomeBloc>()
+                              .add(AddToFavouriteEvent(file: file));
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -106,10 +119,16 @@ class SongWidget extends StatelessWidget {
                             CircularSoftButton(
                               radius: 25,
                               padding: 0,
-                              icon: Center(child: Icon(Icons.favorite,color: blueBackground,)),
+                              icon: Center(
+                                  child: Icon(
+                                Icons.favorite,
+                                color: blueBackground,
+                              )),
                             ),
-                            SizedBox(height: 10,),
-                            Text('Add')
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(AppStrings.add)
                           ],
                         ),
                       ),
@@ -124,29 +143,28 @@ class SongWidget extends StatelessWidget {
                             CircularSoftButton(
                               radius: 25,
                               padding: 0,
-                              icon: Center(child: Icon(Icons.album,color: blueBackground,)),
+                              icon: Center(
+                                  child: Icon(
+                                Icons.album,
+                                color: blueBackground,
+                              )),
                             ),
-                            SizedBox(height: 10,),
-                            Text('Album')
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(AppStrings.album)
                           ],
                         ),
                       ),
                     ],
                   ),
-            ),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: RotatedBox(
-                quarterTurns: 1,
-                child: SvgPicture.asset(
-                  AppSvg.more,
-                  height: 16,
-                  color: Colors.grey,
-                )),
-          ),
-        )
+                ),
+              );
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Icon(Icons.more_vert),
+            ))
       ],
     );
   }

@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/bloc/boarding_bloc/boarding_bloc.dart';
-import 'package:music/bloc/boarding_bloc/boarding_state.dart';
-
 import '../../../res/app_colors.dart';
 
 class BoardingPage extends StatelessWidget {
@@ -36,26 +32,6 @@ class BoardingPage extends StatelessWidget {
         ),
         const SizedBox(
           height: 30,
-        ),
-        BlocBuilder<BoardingBLoc, BoardingState>(
-          builder: (context, state) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ...[0, 1, 2].map((e) => Container(
-                      height: state.index == e ? 10 : 8,
-                      width: state.index == e ? 10 : 8,
-                      margin: EdgeInsets.symmetric(horizontal: 2),
-                      decoration: BoxDecoration(
-                        color: state.index == e
-                            ? lightBlueShade
-                            : Colors.grey.withOpacity(.6),
-                        shape: BoxShape.circle,
-                      ),
-                    ))
-              ],
-            );
-          },
         ),
         SizedBox(
           height: 60,

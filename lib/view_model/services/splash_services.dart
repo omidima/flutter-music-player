@@ -1,30 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:music/utils/utils.dart';
-import 'package:music/view/home/home_view.dart';
-import 'package:permission_handler/permission_handler.dart';
-class SplashServices{
-  static isFirstTime({required BuildContext context})async{
-    bool permission=await Utils.requestPermission();
-    Timer(const Duration(milliseconds: 1500), () async {
-      if(permission){
-        Utils.go(context: context, screen: const HomeView(),replace: true);
-      }else{
-        await openAppSettings();
+import 'package:simple_music_player/utils/utils.dart';
+import 'package:simple_music_player/view/home/home_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class SplashServices {
+  static isFirstTime({required BuildContext context}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final check = pref.getBool('OPENED') ?? false;
+
+    bool permission = await Utils.requestPermission();
+    Timer(const Duration(milliseconds: 1000), () async {
+      if (permission && check) {
+        Utils.go(context: context, screen: const HomeView(), replace: true);
+      } else {
+        Utils.go(context: context, screen: const HomeView(), replace: true);
       }
     });
-
-
-    // SharedPreferences pref=await SharedPreferences.getInstance();
-    // final check=pref.getBool('OPENED') ?? false;
-    // Timer(const Duration(seconds: 2), () {
-    //   if(check){
-    //     Utils.go(context: context, screen: const HomeView(),replace: true);
-    //   }else{
-    //     Utils.go(context: context, screen: const OnBoarding(),replace: true);
-    //   }
-    // });
   }
-
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music/view/onBoarding/components/boarding_page.dart';
+import 'package:simple_music_player/view/onBoarding/components/boarding_page.dart';
 class FirstPage extends StatelessWidget {
   const FirstPage({super.key});
   @override

@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:music/bloc/album_bloc/album_event.dart';
-import 'package:music/bloc/album_bloc/album_state.dart';
-import 'package:music/bloc/home_bloc/home_state.dart';
-import 'package:music/view_model/services/audio_query_services.dart';
+import 'package:simple_music_player/bloc/album_bloc/album_event.dart';
+import 'package:simple_music_player/bloc/album_bloc/album_state.dart';
+import 'package:simple_music_player/bloc/home_bloc/home_state.dart';
+import 'package:simple_music_player/view_model/services/audio_query_services.dart';
 
 class AlbumBloc extends Bloc<AlbumEvent, AlbumState> {
   final PageController pageController;
@@ -15,44 +15,41 @@ class AlbumBloc extends Bloc<AlbumEvent, AlbumState> {
     on(_loadingStatusChange);
   }
 
-  Future<void> _getFilesEvent(GetFolderEvent event,
-      Emitter<AlbumState> emit) async {
+  Future<void> _getFilesEvent(
+      GetFolderEvent event, Emitter<AlbumState> emit) async {
     emit(state.copyWith(folders: await AudioFileQueries.getFolders()));
   }
 
-  Future<void> _folderTapEvent(FolderTapEvent event,
-      Emitter<AlbumState> emit) async {
+  Future<void> _folderTapEvent(
+      FolderTapEvent event, Emitter<AlbumState> emit) async {
     add(LoadingStatusChange(status: Status.loading));
-    try{
+    try {
       pageController.animateToPage(1,
           duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
       currentPage = 1;
-    }catch(_){
-
-    }
+    } catch (_) {}
     emit(state.copyWith(
         audioFiles: await AudioFileQueries.getFiles(event.path),
         appBarTitle: event.folderName));
     add(LoadingStatusChange(status: Status.complete));
   }
 
-  Future<void> _backArrowClick(BackArrowTap event,
-      Emitter<AlbumState> emit) async {
+  Future<void> _backArrowClick(
+      BackArrowTap event, Emitter<AlbumState> emit) async {
     if (currentPage == 1) {
-      try{
+      try {
         pageController.animateToPage(0,
             duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
         currentPage = 0;
-      }catch(_){
-
-      }
+      } catch (_) {}
       emit(state.copyWith(audioFiles: [], appBarTitle: 'Album'));
-    }else{
+    } else {
       Navigator.pop(event.context);
     }
   }
-  void _loadingStatusChange(LoadingStatusChange event,
-      Emitter<AlbumState> emit) {
+
+  void _loadingStatusChange(
+      LoadingStatusChange event, Emitter<AlbumState> emit) {
     emit(state.copyWith(fileStatus: event.status));
   }
 }

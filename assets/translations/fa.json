@@ -1,0 +1,15 @@
+{
+    "app_name": "موزیک پلیر ساده",
+    "header_name": " تنها به موسیقی گوش دهید",
+    "header_desc": "همین‌حالا امتحان کنید",
+    "header_direct": "ساده و حرفه‌ای",
+    "listen": "بشنوید",
+    "recently_played": "آخرین پخش شده‌ها",
+    "see_all": "نمایش همه",
+    "album": "آلبوم‌ها",
+    "playing": "در حال پخش",
+    "favorite": "مورد علاقه‌ها",
+    "morning_message":"صبحت بخیر :)",
+    "evening_message":"بعد از ظهر بخیر",
+    "night_message":"شب خوش ;)"
+}

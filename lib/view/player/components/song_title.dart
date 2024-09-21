@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:music/model/audio_file_model.dart';
+import 'package:simple_music_player/model/audio_file_model.dart';
+import 'package:simple_music_player/res/app_string.dart';
 
 import '../../../res/app_colors.dart';
 
@@ -9,7 +10,7 @@ class SongTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 70,bottom: 60),
+      padding: const EdgeInsets.symmetric(vertical: 25),
       child: Column(
         children: [
 
@@ -21,7 +22,7 @@ class SongTitle extends StatelessWidget {
                 fontSize: 20),
           ),
           Text(
-            'Listen Music',
+            AppStrings.listen,
             style: TextStyle(
                 color: blueBackground,
                 fontWeight: FontWeight.bold,

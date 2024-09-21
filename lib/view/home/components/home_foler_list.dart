@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:layout_pro/responsive_layout.dart';
-import 'package:music/view/home/components/song_list_home.dart';
+import 'package:simple_music_player/res/app_string.dart';
+import 'package:simple_music_player/view/home/components/song_list_home.dart';
 
 import '../../../bloc/album_bloc/album_bloc.dart';
 import '../../../bloc/album_bloc/album_event.dart';
@@ -22,7 +23,7 @@ class HomeFolderList extends StatelessWidget {
         Row(
           children: [
             const Text(
-              'Album',
+              AppStrings.gallery,
               style: TextStyle(
                 color: Colors.black87,
                 fontSize: 20,
@@ -36,7 +37,7 @@ class HomeFolderList extends StatelessWidget {
                 Utils.go(context: context, screen: AllMusicAlbum());
               },
               child: const Text(
-                'See all',
+                AppStrings.see_all,
                 style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
               ),
             )
@@ -114,7 +115,7 @@ class HomeFolderList extends StatelessWidget {
                                       fontSize: 14),
                                 ),
                                 const Text(
-                                  'Listen Music',
+                                  AppStrings.played_music,
                                   style: TextStyle(
                                       color: Colors.grey,
                                       fontSize: 10,
